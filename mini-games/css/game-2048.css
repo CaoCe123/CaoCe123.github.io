@@ -1,0 +1,97 @@
+.board-2048 {
+  position: relative;
+  width: 320px;
+  height: 320px;
+  margin: 16px auto;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  padding: 8px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  gap: 8px;
+  touch-action: none;
+}
+
+.cell-2048 {
+  position: relative;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+}
+
+/* Emoji 方块：柔和玻璃底，大表情居中 */
+.tile {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  font-size: 2.1rem;
+  line-height: 1;
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  transition: transform 0.12s ease;
+}
+
+/* 越高级的方块越「发光」，强调进化的成就感 */
+.tile-128, .tile-256 {
+  box-shadow: 0 0 12px -3px #ffd54f, inset 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+.tile-512, .tile-1024 {
+  background: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 0 16px -2px #ffb074, inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+.tile-2048, .tile-super {
+  background: rgba(255, 255, 255, 0.24);
+  box-shadow: 0 0 22px 0 #ffd54f, inset 0 1px 0 rgba(255, 255, 255, 0.35);
+}
+
+/* 新方块弹入 */
+.tile-new { animation: tile-pop-in 0.18s ease; }
+@keyframes tile-pop-in {
+  0% { transform: scale(0); }
+  100% { transform: scale(1); }
+}
+
+/* 合并弹跳 */
+.tile-merged { animation: tile-bounce 0.2s ease; }
+@keyframes tile-bounce {
+  0% { transform: scale(1); }
+  45% { transform: scale(1.25); }
+  100% { transform: scale(1); }
+}
+
+/* 飘分：合并时从方块上方飘出「+N」并淡出 */
+.score-float {
+  position: absolute;
+  top: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #ffe082;
+  font-weight: 800;
+  font-size: 0.95rem;
+  text-shadow: 0 0 6px rgba(0, 0, 0, 0.6);
+  pointer-events: none;
+  z-index: 2;
+  animation: score-rise 0.7s ease forwards;
+}
+@keyframes score-rise {
+  0%   { opacity: 0; transform: translate(-50%, 4px); }
+  25%  { opacity: 1; }
+  100% { opacity: 0; transform: translate(-50%, -30px); }
+}
+
+.game-2048-controls {
+  text-align: center;
+  margin-top: 12px;
+}
+
+.game-2048-message {
+  text-align: center;
+  margin-top: 12px;
+  font-size: 1.1rem;
+  min-height: 1.5em;
+}
