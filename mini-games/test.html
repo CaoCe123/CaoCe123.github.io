@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>2048 逻辑测试</title>
+  <style>
+    body { font-family: monospace; padding: 20px; background: #1e1e2e; color: #eee; }
+    .pass { color: #53d769; }
+    .fail { color: #e94560; font-weight: bold; }
+    h1 { font-size: 1.2rem; }
+    #summary { margin: 12px 0; font-size: 1.1rem; }
+  </style>
+</head>
+<body>
+  <h1>2048 logic unit tests</h1>
+  <div id="summary"></div>
+  <div id="results"></div>
+
+  <script src="js/logic-2048.js"></script>
+  <script>
+    let passed = 0, failed = 0;
+    const results = document.getElementById("results");
+
+    function eq(a, b) { return JSON.stringify(a) === JSON.stringify(b); }
+
+    function test(name, actual, expected) {
+      const ok = eq(actual, expected);
+      ok ? passed++ : failed++;
+      const div = document.createElement("div");
+      div.className = ok ? "pass" : "fail";
+      div.textContent = (ok ? "✓ " : "✗ ") + name +
+        (ok ? "" : `  (得到 ${JSON.stringify(actual)}, 期望 ${JSON.stringify(expected)})`);
+      results.appendChild(div);
+    }
+
+    window.runTests = function () {
+      document.getElementById("summary").textContent =
+        `通过 ${passed} / 失败 ${failed}`;
+      document.getElementById("summary").className = failed === 0 ? "pass" : "fail";
+    };
+  </script>
+  <script src="test-cases.js"></script>
+</body>
+</html>
