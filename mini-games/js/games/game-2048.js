@@ -12,6 +12,7 @@ window.MiniGames.games = window.MiniGames.games || [];
   let won = false; // 是否已合出 2048（用于胜利提示只弹一次）
   let keyHandler = null;
   let touchStart = null;
+  let touchSurface = null; // 触摸滑动监听所在的元素（整个游戏视图）
   let mountEl = null;
   let onScoreChange = null; // 由 app 注入，用于更新顶栏分数
 
@@ -134,9 +135,10 @@ window.MiniGames.games = window.MiniGames.games || [];
     };
     document.addEventListener("keydown", keyHandler);
 
-    const boardEl = mountEl.querySelector(".board-2048");
-    boardEl.addEventListener("touchstart", onTouchStart, { passive: false });
-    boardEl.addEventListener("touchend", onTouchEnd, { passive: false });
+    // 触摸滑动监听整个游戏视图，全屏任意位置都能操作（不限于棋盘内）
+    touchSurface = mountEl.parentElement || mountEl;
+    touchSurface.addEventListener("touchstart", onTouchStart, { passive: true });
+    touchSurface.addEventListener("touchend", onTouchEnd, { passive: true });
 
     newGame();
   }
@@ -160,7 +162,12 @@ window.MiniGames.games = window.MiniGames.games || [];
 
   function stop() {
     if (keyHandler) document.removeEventListener("keydown", keyHandler);
+    if (touchSurface) {
+      touchSurface.removeEventListener("touchstart", onTouchStart);
+      touchSurface.removeEventListener("touchend", onTouchEnd);
+    }
     keyHandler = null;
+    touchSurface = null;
     touchStart = null;
     if (mountEl) mountEl.innerHTML = "";
     mountEl = null;

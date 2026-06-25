@@ -32,6 +32,7 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  touch-action: none; /* 全屏滑动操作时不触发页面滚动/下拉刷新 */
 }
 
 .app-title {
